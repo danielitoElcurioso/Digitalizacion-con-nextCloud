@@ -10,20 +10,18 @@ set -e
 # Variables básicas
 NEXTCLOUD_DIR="/var/www/nextcloud"
 DB_NAME="nextcloud"
-DB_USER="nc_user"
-DB_PASS="nc_pass123"
+DB_USER="nextclouduser"
+DB_PASS="admin23456$"
 DOMAIN_NAME="nextcloud.tu-dominio.com"
 
 # Actualizar e instalar paquetes
-echo "🔄 Actualizando sistema..."
 apt update && apt upgrade -y
 
-echo "📦 Instalando Apache, PHP y MariaDB..."
+# Instalamos Apache, PHP y MariaDB..
 apt install -y apache2 mariadb-server libapache2-mod-php php php-gd php-json php-mysql \
 php-curl php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp unzip wget curl
 
 # Configurar base de datos
-echo "🗃️ Configurando base de datos..."
 mysql -u root <<EOF
 CREATE DATABASE ${DB_NAME};
 CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';
@@ -32,7 +30,6 @@ FLUSH PRIVILEGES;
 EOF
 
 # Descargar Nextcloud
-echo "⬇️ Descargando Nextcloud..."
 cd /tmp
 wget https://download.nextcloud.com/server/releases/latest.zip
 unzip latest.zip
